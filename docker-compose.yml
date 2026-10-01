@@ -1,0 +1,25 @@
+﻿version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: gateway_redis_cache
+    restart: always
+    ports:
+      - "6380:6379"
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: gateway_pgvector_cache
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: gateway_cache_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - gateway_pgdata:/var/lib/postgresql/data
+
+volumes:
+  gateway_pgdata:
